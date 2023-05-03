@@ -12,9 +12,6 @@ using Random = UnityEngine.Random;
 
 public class ModuleSprintScript : MonoBehaviour
 {
-    // TODO: Remove before uploading
-    // Example logging: Debug.LogFormat("[Module Sprint #{0}]: (Stage {1}) ", ModuleID, CurrentStage + 1);
-
     // Unity objects
     // First, KModkit objects
     public KMBombInfo BombInfo;
