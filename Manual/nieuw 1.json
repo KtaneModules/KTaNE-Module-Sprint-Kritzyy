@@ -1,0 +1,16 @@
+{
+  "Author": "Kritzy",
+  "Compatibility": "Compatible",
+  "DefuserDifficulty": "Hard",
+  "Description": "Solve 4 mini modules back-to-back, each within a certain amount of time. Tags: mini-modules, timer, 4-solves, four-solves, hatch",
+  "ExpertDifficulty": "Hard",
+  "ModuleID": "KritModuleSprint",
+  "Name": "Module Sprint",
+  "Origin": "Mods",
+  "Published": "2023-05-04",
+  "SortKey": "MODULESPRINT",
+  "SourceUrl": "https://github.com/Kritzyy/KTaNE-Module-Sprint",
+  "SteamID": "X",
+  "Symbol": "Mdsp",
+  "Type": "Regular"
+}
