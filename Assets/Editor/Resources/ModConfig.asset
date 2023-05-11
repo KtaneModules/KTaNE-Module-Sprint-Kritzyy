@@ -14,12 +14,11 @@ MonoBehaviour:
   id: KritModuleSprint
   title: Module Sprint
   author: Kritzy
-  description: 'Remember your training, experts. This module will test your knowledge
+  description: "Remember your training, experts. This module will test your knowledge
     of various other modules you faced in the past. Although, they look and function
-    a bit different than before.
-
-
-    Manual link (temporary): https://drive.google.com/file/d/16ISlN4Kj5KbrKqHP0dPZ6p0l55nZhYGD/view?usp=sharing'
+    a bit different than before.\r\n\r\nModule ID: KritModuleSprint\r\n\r\nManual
+    link (HTML): https://ktane.timwi.de/HTML/Module%20Sprint.html\r\nManual link (PDF):
+    https://ktane.timwi.de/PDF/Module%20Sprint.pdf"
   version: V1
   outputFolder: build
   previewImage: {fileID: 2800000, guid: a1698d2cf339a3e45805de9eb14dfe4f, type: 3}
