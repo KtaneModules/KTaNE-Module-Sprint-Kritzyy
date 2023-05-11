@@ -588,6 +588,14 @@ public class ModuleSprintScript : MonoBehaviour
 
                         ButtonObject.GetComponent<Renderer>().material.color = AllColors[(int)TheButton.Color];
                         ButtonText.text = TheButton.Text;
+                        if (TheButton.Color == ColorEnum.YELLOW || TheButton.Color == ColorEnum.WHITE || TheButton.Color == ColorEnum.GREEN)
+                        {
+                            ButtonText.color = Color.black;
+                        }
+                        else
+                        {
+                            ButtonText.color = Color.white;
+                        }
                         break;
                     }
                 case "MorseModule":
@@ -2028,7 +2036,6 @@ public class ModuleSprintScript : MonoBehaviour
             Debug.LogFormat("[Module Sprint #{0}]: (Stage {1}) Strike! {2}. Resetting...", ModuleID, CurrentStage + 1, Reason);
             ThisModule.HandleStrike();
             HandleAnimation("Close", ModuleOrder[CurrentStage], null);
-            StartButton.OnInteract = StartButton_Press;
             ToggleModuleSelectables(false);
         }
         else
@@ -2042,7 +2049,7 @@ public class ModuleSprintScript : MonoBehaviour
         NextButton.OnInteract = EmptyButton_Click;
         
 
-        StartCoroutine(DelayRegenerate());
+        StartCoroutine(DelayRegenerate(true));
 
         // Reset general
         CurrentStage = 0;
@@ -2124,10 +2131,14 @@ public class ModuleSprintScript : MonoBehaviour
         ModuleStarted = false;
     }
 
-    IEnumerator DelayRegenerate()
+    IEnumerator DelayRegenerate(bool Reset)
     {
         yield return new WaitForSecondsRealtime(0.5f);
         GenerateModules();
+        if (Reset)
+        {
+            StartButton.OnInteract = StartButton_Press;
+        }
         yield return null;
     }
 
