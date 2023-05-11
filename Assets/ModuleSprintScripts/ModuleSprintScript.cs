@@ -881,9 +881,9 @@ public class ModuleSprintScript : MonoBehaviour
                     Debug.LogFormat("[Module Sprint #{0}]: (Stage {1}) Base color cycle is {2}", ModuleID, CurrentStage + 1, Simon.SimonColorCycle);
 
                     // And lastly the broken buttons
-                    bool VennDiagram1 = Simon.SimonGeneratedLight == SimonLightType.Flickering, 
-                         VennDiagram2 = BombInfo.GetPortCount() < 5,
-                         VennDiagram3 = BombInfo.GetBatteryCount() < 5,
+                    bool VennDiagram2 = Simon.SimonGeneratedLight == SimonLightType.Flickering, 
+                         VennDiagram3 = BombInfo.GetPortCount() < 5,
+                         VennDiagram1 = BombInfo.GetBatteryCount() < 5,
                          VennDiagram4 = BombInfo.GetOnIndicators().Count() == 0 && BombInfo.GetOffIndicators().Count() > 0;
 
                     Debug.LogFormat("(Module Sprint #{0}): (Stage {1}) {2}{3}{4}{5}", ModuleID, CurrentStage + 1, VennDiagram1, VennDiagram2, VennDiagram3, VennDiagram4);
@@ -1083,7 +1083,7 @@ public class ModuleSprintScript : MonoBehaviour
                     // Generate correct letters through ciphers
                     // Column 1: Ceasar
                     int CipherShift = BombInfo.GetSerialNumberNumbers().First();
-                    if (Regex.IsMatch(PasswordStartingCharacters[0].ToString(), "[A-L]"))
+                    if (Regex.IsMatch(PasswordStartingCharacters[0].ToString(), "[A-J]"))
                     {
                         PasswordCorrectCharacters[0] = (char)(((PasswordStartingCharacters[0] - 'A' + CipherShift) % 26) + 'A');
                         Debug.LogFormat("(Module Sprint #{0}): (Stage {1}) 1st letter is in A-J, so shift by {2} to get {3}", ModuleID, CurrentStage + 1, CipherShift, PasswordCorrectCharacters[0]);
@@ -1105,7 +1105,7 @@ public class ModuleSprintScript : MonoBehaviour
                     Debug.LogFormat("(Module Sprint #{0}): (Stage {1}) 3rd letter is {2} (Index = {3})", ModuleID, CurrentStage + 1, PasswordCorrectCharacters[2], LetterIndex1);
 
                     // Column 4: Ceasar again
-                    if (Regex.IsMatch(PasswordStartingCharacters[3].ToString(), "[A-L]"))
+                    if (Regex.IsMatch(PasswordStartingCharacters[3].ToString(), "[A-J]"))
                     {
                         PasswordCorrectCharacters[3] = (char)(((PasswordStartingCharacters[3] - 'A' + CipherShift) % 26) + 'A');
                         Debug.LogFormat("(Module Sprint #{0}): (Stage {1}) 4th letter is in A-J, so shift by {2} to get {3}", ModuleID, CurrentStage + 1, CipherShift, PasswordCorrectCharacters[3]);
@@ -1122,7 +1122,7 @@ public class ModuleSprintScript : MonoBehaviour
 
                     // column 6: Pangram again
                     int LetterIndex2 = (PasswordStartingCharacters[5] - 'A' + 1) * BombInfo.GetSerialNumberNumbers().Last() % 34;
-                    PasswordCorrectCharacters[5] = Pangram[LetterIndex2 - 1];
+                    PasswordCorrectCharacters[5] = Pangram[LetterIndex2];
                     Debug.LogFormat("(Module Sprint #{0}): (Stage {1}) 6th letter is {2} (Index = {3})", ModuleID, CurrentStage + 1, PasswordCorrectCharacters[5], LetterIndex2);
 
                     // Logging
@@ -2084,10 +2084,11 @@ public class ModuleSprintScript : MonoBehaviour
         // Button
         MiniSolve_Button.material.mainTexture = SolveLight_Unlit;
         MiniSolve_Button_Light.gameObject.SetActive(false);
-
+        
         // Morse
-        MiniSolve_Simon.material.mainTexture = SolveLight_Lit;
-        MiniSolve_Simon_Light.gameObject.SetActive(true);
+        MiniSolve_Morse.material.mainTexture = SolveLight_Lit;
+        MiniSolve_Morse_Light.gameObject.SetActive(true);
+        
         EnteredMorse = "";
         EnteredText = "";
         MorseCodeMesh.text = EnteredMorse + "|";
