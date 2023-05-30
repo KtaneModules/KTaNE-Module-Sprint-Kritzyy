@@ -569,6 +569,7 @@ public class ModuleSprintScript : MonoBehaviour
                         }
 
                         // Generate the bottom letters.
+                        WireConnectionLetters = "";
                         for (int T = 0; T < 6; T++)
                         {
                             int index = Random.Range(0, "ABCDEF".Length);
