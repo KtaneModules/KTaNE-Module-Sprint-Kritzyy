@@ -569,6 +569,7 @@ public class ModuleSprintScript : MonoBehaviour
                         }
 
                         // Generate the bottom letters.
+                        WireConnectionLetters = "";
                         for (int T = 0; T < 6; T++)
                         {
                             int index = Random.Range(0, "ABCDEF".Length);
@@ -2093,8 +2094,8 @@ public class ModuleSprintScript : MonoBehaviour
         MiniSolve_Button_Light.gameObject.SetActive(false);
         
         // Morse
-        MiniSolve_Morse.material.mainTexture = SolveLight_Lit;
-        MiniSolve_Morse_Light.gameObject.SetActive(true);
+        MiniSolve_Morse.material.mainTexture = SolveLight_Unlit;
+        MiniSolve_Morse_Light.gameObject.SetActive(false);
         
         EnteredMorse = "";
         EnteredText = "";
