@@ -707,6 +707,7 @@ public class ModuleSprintScript : MonoBehaviour
                             PassCharTextMesh[T].color = new Color32(0, 255, 0, 255);
                         }
                         Array.Copy(PasswordStartingCharacters, PasswordCurrentCharacters, 6);
+                        Debug.LogFormat("(Module Sprint #{0}): (Stage {1}) Initial letters are: {2}{3}{4}{5}{6}{7}.", ModuleID, CurrentStage + 1, PasswordCurrentCharacters[0], PasswordCurrentCharacters[1], PasswordCurrentCharacters[2], PasswordCurrentCharacters[3], PasswordCurrentCharacters[4], PasswordCurrentCharacters[5]);
                         break;
                     }
             }
@@ -1510,7 +1511,7 @@ public class ModuleSprintScript : MonoBehaviour
 
                     if (PortFound)
                     {
-                        Debug.LogFormat("[Module Sprint #{0}]: (Stage {1}) Port found, so expected: \"YES\" ", ModuleID, GeneratedText);
+                        Debug.LogFormat("[Module Sprint #{0}]: (Stage {1}) Port found, so expected: \"YES\" ", ModuleID, CurrentStage+1);
                         if (EnteredText == "YES")
                         {
                             SolveMiniModule("Morse");
@@ -1519,7 +1520,7 @@ public class ModuleSprintScript : MonoBehaviour
                     }
                     else if (!PortFound)
                     {
-                        Debug.LogFormat("[Module Sprint #{0}]: (Stage {1}) Port not found, so expected: \"NO\" ", ModuleID, GeneratedText);
+                        Debug.LogFormat("[Module Sprint #{0}]: (Stage {1}) Port not found, so expected: \"NO\" ", ModuleID, CurrentStage+1);
                         if (EnteredText == "NO")
                         {
                             SolveMiniModule("Morse");
@@ -2066,12 +2067,9 @@ public class ModuleSprintScript : MonoBehaviour
         }
 
         // Timer
-        try
+        if (TimerHandler != null)
         {
             StopCoroutine(TimerHandler);
-        }
-        catch (NullReferenceException)
-        {
         }
         TimerRender.material.color = new Color32(100, 100, 100, 0);
         TimerObject.transform.localScale = new Vector3(0.0254929f, 0.005373799f, TimerSize);
