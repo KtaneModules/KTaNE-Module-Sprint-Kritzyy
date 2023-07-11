@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -2264,7 +2263,8 @@ public class ModuleSprintScript : MonoBehaviour
     }
 
     // Twitch Plays
-    private readonly string TwitchHelpMessage = "!{0} [Module] [Command] [Arguments]. Modules are: wires, button, morse, simon, maze, password. Type !{0} start to start the module, and !{0} next to go to the next module once the current one is solved. For wires: !{0} wires cut [123456] to cut wires 1 to 6. For button: !{0} button [press] to press and immediately release the button, [hold] to hold down the button, and [release] [9] to release at 9 seconds. For morse: !{0} morse [enter] [string] to enter the text \"string\" (Not case-sensitive), [clear] to remove the text, [flash] to reflash the morse message, and [submit] to submit. For simon: !{0} simon [press] [rbyg] to press, in order, red blue yellow green (Lower case means press, upper case means hold). For maze: !{0} maze [move] [udlr] to move, in order, up down left right (Can chain these to make a series of moves). For password: !{0} [enter] [ABCDEF] to enter \"ABCDEF\" (not case-sensetive).";
+    private readonly string TwitchHelpMessage = "!{0} [Module] [Command] [Arguments]. Modules are: wires, button, morse, simon, maze, password. Type !{0} start to start the module, and !{0} next to go to the next module once the current one is solved. For wires: !{0} wires cut [123456] to cut wires 1 to 6. For button: !{0} button [press] to press and immediately release the button, [hold] to hold down the button, and [release] [9] to release at 9 seconds. For morse: !{0} morse [enter] [string] to enter the text \"string\" (Not case-sensitive), [clear] to remove the text, [flash] to reflash the morse message, and [submit] to submit the message. Alternatively, you can use [submitat] [XX] to submit when the timer reaches XX seconds. For simon: !{0} simon [press] [rbyg] to press, in order, red blue yellow green (Lower case means press, upper case means hold). For maze: !{0} maze [move] [udlr] to move, in order, up down left right (Can chain these to make a series of moves). For password: !{0} [enter] [ABCDEF] to enter \"ABCDEF\" (not case-sensetive).";
+    private int TPBombTimer;
 
     IEnumerator ProcessTwitchCommand(string Command)
     {
@@ -2321,6 +2321,10 @@ public class ModuleSprintScript : MonoBehaviour
                                     yield return null;
                                     wireToCut.OnInteract();
                                 }
+                            }
+                            else if (CommandArgs.Length > 2)
+                            {
+                                yield return "sendtochaterror Wires does not recognize the command \"" + CommandArgs[1] + "\".";
                             }
                             else
                             {
@@ -2393,6 +2397,11 @@ public class ModuleSprintScript : MonoBehaviour
                                             {
                                                 yield return "sendtochaterror No release time given. Please enter a value between 0 and 9.";
                                             }
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            yield return "sendtochaterror Button does not recognize the command \"" + CommandArgs[1] + "\".";
                                             break;
                                         }
                                 }
@@ -2491,6 +2500,37 @@ public class ModuleSprintScript : MonoBehaviour
                                             MorseSubmitSelectable.OnInteract();
                                             break;
                                         }
+                                    case "submitat":
+                                        {
+                                            int SubmitTime;
+                                            if (CommandArgs.Length == 3 && int.TryParse(CommandArgs[2], out SubmitTime))
+                                            {
+                                                if (SubmitTime < 60 && SubmitTime >= 0)
+                                                {
+                                                    Coroutine GetTime = StartCoroutine(TwitchPlaysGetTime());
+                                                    while (SubmitTime != TPBombTimer)
+                                                    {
+                                                        yield return "trycancel";
+                                                    }
+                                                    MorseSubmitSelectable.OnInteract();
+                                                    StopCoroutine(GetTime);
+                                                }
+                                                else
+                                                {
+                                                    yield return "sendtochaterror The release time should be somewhere between 0 and 59. " +  SubmitTime + " is not valid.";
+                                                }
+                                            }
+                                            else
+                                            {
+                                                yield return "sendtochaterror No valid release time given";
+                                            }
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            yield return "sendtochaterror Morse does not recognize the command \"" + CommandArgs[1] + "\".";
+                                            break;
+                                        }
                                 }
                             }
                             else
@@ -2585,9 +2625,13 @@ public class ModuleSprintScript : MonoBehaviour
                                     }
                                 }
                             }
+                            else if (CommandArgs.Length > 1)
+                            {
+                                yield return "sendtochaterror Simon does not recognize the command \"" + CommandArgs[1] + "\".";
+                            }
                             else
                             {
-                                yield return "sendtochaterror No further valid commands given for Simon.";
+                                yield return "sendtochaterror No further commands given for Simon.";
                             }
                         }
                         else
@@ -2642,9 +2686,13 @@ public class ModuleSprintScript : MonoBehaviour
                                     yield return "sendtochaterror No movements given for Maze.";
                                 }
                             }
+                            else if (CommandArgs.Length > 1)
+                            {
+                                yield return "sendtochaterror Maze does not recognize the command \"" + CommandArgs[1] + "\".";
+                            }
                             else
                             {
-                                yield return "sendtochaterror No further valid commands given for Maze.";
+                                yield return "sendtochaterror No further commands given for Maze.";
                             }
                         }
                         else
@@ -2683,9 +2731,13 @@ public class ModuleSprintScript : MonoBehaviour
                                     yield return null;
                                     PasswordSubmitSelectable.OnInteract();
                                 }
+                                else if (CommandArgs.Length > 1)
+                                {
+                                    yield return "sendtochaterror Password does not recognize the command \"" + CommandArgs[1] + "\".";
+                                }
                                 else
                                 {
-                                    yield return "sendtochaterror No further valid commands given for Password.";
+                                    yield return "sendtochaterror No further commands given for Password.";
                                 }
                             }
                             else
@@ -2718,6 +2770,15 @@ public class ModuleSprintScript : MonoBehaviour
             }
         }
         yield return null;
+    }
+
+    IEnumerator TwitchPlaysGetTime()
+    {
+        while (true)
+        {
+            TPBombTimer = ((int)BombInfo.GetTime()) % 60;
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
     }
 
     IEnumerator TwitchHandleForcedSolve()
