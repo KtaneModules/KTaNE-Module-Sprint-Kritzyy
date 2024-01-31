@@ -637,7 +637,7 @@ public class ModuleSprintScript : MonoBehaviour
                                     {
                                     { "R,D","L,D","U*,D","R,D","L,D" },
                                     { "U,D","U,R","U,L","U","U,D" },
-                                    { "Ld","L,D","R","R,L,D","U,D,L,Rc" },
+                                    { "Ld,U,R","L,D","R","R,L,D","U,D,L,Rc" },
                                     { "D","U,D","R,D","U,L","U,D" },
                                     { "U,R","U,L,R","U,L,Ds","R","U,L" }
                                     };
@@ -1744,7 +1744,7 @@ public class ModuleSprintScript : MonoBehaviour
                     }
             }
         }
-        else if (Maze[CoordY, CoordX].Any("*dsc".Contains))
+        else if (Maze[CoordY, CoordX].Any("*dsc".Contains) && PossibleMoves.Where(x => x.Length == 2).ToArray()[0][0].ToString() == Direction)
         {
             // Exits
             if (Maze[CoordY, CoordX].Contains("*") && GeneratedMazeShape == MazeShape.STAR)
