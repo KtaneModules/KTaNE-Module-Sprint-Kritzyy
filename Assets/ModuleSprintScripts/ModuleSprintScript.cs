@@ -362,6 +362,7 @@ public class ModuleSprintScript : MonoBehaviour
         InteriorPlatform.SetActive(false);
 
         GetTimePerModule();
+        GetModuleOrder();
     }
 
     void ToggleModuleSelectables(bool EnableSelectables)
@@ -514,8 +515,6 @@ public class ModuleSprintScript : MonoBehaviour
             Debug.LogFormat("(Module Sprint #{0}): An error occurred while trying to read the JSON. Setting time to default (150 seconds)", ModuleID);
             Timer = 150;
         }
-
-        GetModuleOrder();
     }
 
     void GetModuleOrder()
@@ -706,7 +705,7 @@ public class ModuleSprintScript : MonoBehaviour
                             PassCharTextMesh[T].color = new Color32(0, 255, 0, 255);
                         }
                         Array.Copy(PasswordStartingCharacters, PasswordCurrentCharacters, 6);
-                        Debug.LogFormat("(Module Sprint #{0}): (Stage {1}) Initial letters are: {2}{3}{4}{5}{6}{7}.", ModuleID, CurrentStage + 1, PasswordCurrentCharacters[0], PasswordCurrentCharacters[1], PasswordCurrentCharacters[2], PasswordCurrentCharacters[3], PasswordCurrentCharacters[4], PasswordCurrentCharacters[5]);
+                        Debug.LogFormat("[Module Sprint #{0}]: (Stage {1}) Initial letters are: {2}{3}{4}{5}{6}{7}.", ModuleID, CurrentStage + 1, PasswordCurrentCharacters[0], PasswordCurrentCharacters[1], PasswordCurrentCharacters[2], PasswordCurrentCharacters[3], PasswordCurrentCharacters[4], PasswordCurrentCharacters[5]);
                         break;
                     }
             }
@@ -1267,15 +1266,7 @@ public class ModuleSprintScript : MonoBehaviour
         TheButton.ReleaseTime = ReleaseTimer;
         Debug.LogFormat("[Module Sprint #{0}]: (Stage {1}) Button color is {2} and is {3}, so release at {4}", ModuleID, CurrentStage + 1, LEDColor.ToString(), Blinking==1? "blinking":"lit up", ReleaseTimer);
         Debug.LogFormat("(Module Sprint #{0}): (Stage {1}) [{2}, {3}]", ModuleID, CurrentStage + 1, Blinking, (int)LEDColor);
-
-        if (Blinking == 1)
-        {
-            HoldAnim = StartCoroutine(HandleHoldAnimation(Color, false));
-        }
-        else
-        {
-            HoldAnim = StartCoroutine(HandleHoldAnimation(Color, false));
-        }
+        HoldAnim = StartCoroutine(HandleHoldAnimation(Color, Blinking != 1));
     }
 
     IEnumerator CountHoldDuration()
